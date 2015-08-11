@@ -7,13 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_DAYS = "celebrates";
@@ -22,7 +17,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "_id";
     private static final String KEY_DATE = "date";
     private static final String KEY_DESCRIPTION = "description";
-    private List<String> contactList = new ArrayList<String>();
     private List<String> arrCelebrates = new ArrayList<String>();
 
     public DatabaseHandler(Context context) {
@@ -53,23 +47,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<String> getAllCelebrateList () {
+        arrCelebrates.clear();
         String[] dates = null;
-        /*List<Celebrate> contactList = new ArrayList<Celebrate>();
-        String selectQuery = "SELECT  * FROM " + TABLE_DAYS + "";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                Celebrate celebrate = new Celebrate();
-                celebrate.set_id(Integer.parseInt(cursor.getString(0)));
-                celebrate.setDate(cursor.getString(1));
-                celebrate.setDescription(cursor.getString(2));
-                contactList.add(celebrate);
-            } while (cursor.moveToNext());
-        }*/
-
         String selectQuery = "select date from " + TABLE_DAYS + " group by date;";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -82,8 +61,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 i++;
             } while (cursor.moveToNext());
         }
-
-        //String[] datesSorted = convertDates(dates);
 
         Cursor[] cursor1 = new Cursor[dates.length];
         for (int y = 0; y < dates.length; y++) {
