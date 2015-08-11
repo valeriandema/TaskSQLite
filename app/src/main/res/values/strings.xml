@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SQLHomeTask</string>
-
+    <string name="configuration">Fill Out the Your Important Day</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="date">Date:</string>
 </resources>
