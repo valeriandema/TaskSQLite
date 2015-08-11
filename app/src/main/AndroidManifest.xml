@@ -17,10 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddCelebActivity"
-            android:parentActivityName="com.example.user.sqlhometask.MainActivity" >
-        </activity>
+        
+        <activity android:name=".AddCelebActivity"
+            android:label="@string/configuration"/>
     </application>
 
 </manifest>
