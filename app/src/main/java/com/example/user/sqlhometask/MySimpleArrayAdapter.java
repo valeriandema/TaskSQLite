@@ -2,8 +2,6 @@ package com.example.user.sqlhometask;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +52,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
             txtViews[i].setText(splitCelebs[i]);
             txtViews[i].setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                     TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+            txtViews[i].setPadding(0, 0, 0, 30);
             linearLayout.addView(txtViews[i]);
         }
         return rowAdapter;
