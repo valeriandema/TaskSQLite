@@ -71,20 +71,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return arrCelebrates;
     }
 
+    public boolean deleteTitle(int id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_DAYS, KEY_ID + "=" + id, null) > 0;
+    }
+
     private void contain(Cursor cursor1) {
         String combine = null;
-        //String id = null;
+        String id = null;
         String date = null;
         String description = "";
 
         if (cursor1.moveToFirst()) {
             do {
-                //id = cursor1.getString(0);
+                id = cursor1.getString(0);
                 date = cursor1.getString(1);
                 description += cursor1.getString(2) + "/";
             } while (cursor1.moveToNext());
         }
-        combine = date + " " + description;
+        combine = id + " " + date + " " + description;
         arrCelebrates.add(combine);
     }
 
