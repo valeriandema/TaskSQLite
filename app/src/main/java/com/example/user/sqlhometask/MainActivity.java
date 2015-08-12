@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -31,6 +35,9 @@ public class MainActivity extends Activity {
     private String message;
     private ListView listView = null;
     private MySimpleArrayAdapter adapter = null;
+    private final int EDIT = 1;
+    private final int DELETE = 2;
+    private TextView getTxtView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +73,44 @@ public class MainActivity extends Activity {
         adapter = new MySimpleArrayAdapter(this, info);
         listView.setAdapter(adapter);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        Log.e("GET ACTION", v.toString());
+        getTxtView = (TextView) v;
+        menu.add(0, EDIT, 0, "EDIT");
+        menu.add(0, DELETE, 0, "DELETE");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case EDIT:
+
+                break;
+            case DELETE:
+                int contentDescription = Integer.valueOf(getTxtView.getContentDescription().toString());
+
+                if (db.deleteTitle(contentDescription)) {
+                    getInfo();
+                    doingListViewAdapter();
+                    Toast.makeText(this, "You deleted " +
+                            getTxtView.getText().toString() + " notation", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(this, "Your notation wasn't deleted, try again", Toast.LENGTH_SHORT).show();
+
+
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     private void getInfo() {
         info = null;
         List<String> celebrateList = null;
         celebrateList = db.getAllCelebrateList();
         info = new String[celebrateList.size()];
-        Log.e("INFO LENGTH", String.valueOf(celebrateList.size()));
         int i = 0;
         for (String c : celebrateList) {
             info[i] = c;
@@ -152,4 +191,5 @@ public class MainActivity extends Activity {
         myMonth = localCalendar.get(Calendar.MONTH);
         myYear = localCalendar.get(Calendar.YEAR);
     }
+
 }
