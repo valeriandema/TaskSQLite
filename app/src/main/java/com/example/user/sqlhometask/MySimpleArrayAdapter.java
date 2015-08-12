@@ -16,6 +16,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
 
     private final Context context;
     private final String[] values;
+    private TextView[] txtViews;
 
     public MySimpleArrayAdapter(Context context, String[] values) {
         super(context, -1, values);
@@ -29,14 +30,17 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowAdapter = inflater.inflate(R.layout.row_adapter, parent, false);
 
-        String getDate = values[position].substring(0, values[position].indexOf(' '));
+        String getID = values[position].substring(0, values[position].indexOf(' '));
+        String getDate = values[position].substring(values[position].indexOf(' ') + 1);
+        getDate = getDate.substring(0, getDate.indexOf(' '));
         String getCelebs = values[position].substring(values[position].indexOf(' ') + 1);
+        getCelebs = getCelebs.substring(getCelebs.indexOf(' ') + 1);
 
         String[] splitMonth = getDate.split("-");
         String month = getMonthForInt(Integer.valueOf(splitMonth[1]));
         String[] splitCelebs = getCelebs.split("/");
 
-        TextView[] txtViews = new TextView[splitCelebs.length];
+        txtViews = new TextView[splitCelebs.length];
         LinearLayout linearLayout = (LinearLayout) rowAdapter.findViewById(R.id.linearLayout);
 
         TextView txtDate = new TextView(rowAdapter.getContext());
@@ -50,9 +54,18 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         for (int i = 0; i < txtViews.length; i++) {
             txtViews[i] = new TextView(context);
             txtViews[i].setText(splitCelebs[i]);
+            txtViews[i].setContentDescription(getID);
             txtViews[i].setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                     TableLayout.LayoutParams.WRAP_CONTENT, 1f));
             txtViews[i].setPadding(0, 0, 0, 30);
+
+            txtViews[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView txtView = (TextView) v;
+                    txtView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) context);
+                }
+            });
             linearLayout.addView(txtViews[i]);
         }
         return rowAdapter;
@@ -64,7 +77,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] months = dfs.getMonths();
 
-        if (num >= 0 && num <= 11 ) {
+        if (num >= 0 && num <= 11) {
             month = months[num];
         }
         return month;
