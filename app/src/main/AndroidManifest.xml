@@ -20,6 +20,9 @@
         
         <activity android:name=".AddCelebActivity"
             android:label="@string/configuration"/>
-        </application>
 
+        <activity android:name=".EditCelebActivity"
+            android:label="@string/edit"/>
+
+    </application>
 </manifest>
