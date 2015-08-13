@@ -67,14 +67,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor1[y] = db.rawQuery("select * from " + TABLE_DAYS + " where date = " + dates[y] + ";", null);
             contain(cursor1[y]);
         }
-
+        db.close();
         return arrCelebrates;
     }
 
     public boolean deleteTitle(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_DAYS, KEY_ID + "=" + id, null) > 0;
+        boolean bol = db.delete(TABLE_DAYS, KEY_ID + "=" + id, null) > 0;
+        db.close();
+        return bol;
     }
 
     private void contain(Cursor cursor1) {
@@ -94,8 +96,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         arrCelebrates.add(combine);
     }
 
+    public void updateRow (int id, String date, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_DAYS +" SET date='" + date + "', description='" +description + "' WHERE _id='" + id + "';");
+        db.close();
+    }
+
     public void dropTable () {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(TABLE_DAYS, null, null);
+        db.close();
     }
 }
