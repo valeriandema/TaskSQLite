@@ -54,7 +54,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         for (int i = 0; i < txtViews.length; i++) {
             txtViews[i] = new TextView(context);
             txtViews[i].setText(splitCelebs[i]);
-            txtViews[i].setContentDescription(getID);
+            txtViews[i].setContentDescription(getID + "=" + getDate);
             txtViews[i].setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                     TableLayout.LayoutParams.WRAP_CONTENT, 1f));
             txtViews[i].setPadding(0, 0, 0, 30);
