@@ -7,4 +7,9 @@
     <string name="description">Description:</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="changeDate">Change Date</string>
+    <string name="currentDate">Current Date</string>
+    <string name="editDescription">Edit Description</string>
+    <string name="apply">Apply</string>
+    <string name="edit">Edit selected day</string>
 </resources>
