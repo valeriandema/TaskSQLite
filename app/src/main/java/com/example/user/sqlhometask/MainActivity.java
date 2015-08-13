@@ -85,21 +85,26 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        String[] arrContDesc = getTxtView.getContentDescription().toString().split("=");
+        int contentDescription = Integer.valueOf(arrContDesc[0]);
 
         switch (item.getItemId()) {
             case EDIT:
-
+                Intent intent = new Intent(MainActivity.this, EditCelebActivity.class);
+                Bundle extras = new Bundle();
+                extras.putInt("ID", contentDescription);
+                extras.putString("DATE", arrContDesc[1]);
+                extras.putString("DESCRIPTION", getTxtView.getText().toString());
+                intent.putExtras(extras);
+                startActivityForResult(intent, 2);
                 break;
             case DELETE:
-                int contentDescription = Integer.valueOf(getTxtView.getContentDescription().toString());
-
                 if (db.deleteTitle(contentDescription)) {
                     getInfo();
                     doingListViewAdapter();
                     Toast.makeText(this, "You deleted " +
                             getTxtView.getText().toString() + " notation", Toast.LENGTH_SHORT).show();
                 } else Toast.makeText(this, "Your notation wasn't deleted, try again", Toast.LENGTH_SHORT).show();
-
 
                 break;
         }
@@ -177,12 +182,22 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        String answer = data.getStringExtra(EXTRA_MESSAGE);
-        Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();
-        db.addCeleb(new Celebrate(message, answer));
-        info = null;
-        getInfo();
-        doingListViewAdapter();
+        if (requestCode == 1) {
+            String answer = data.getStringExtra(EXTRA_MESSAGE);
+            Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();
+            db.addCeleb(new Celebrate(message, answer));
+            getInfo();
+            doingListViewAdapter();
+        } else if (requestCode == 2) {
+            Bundle extras = data.getExtras();
+            int id = extras.getInt(EditCelebActivity.ID_BACK);
+            String date = extras.getString(EditCelebActivity.DATE_BACK);
+            String description = extras.getString(EditCelebActivity.DESCRIPTION_BACK);
+            db.updateRow(id, date, description);
+            getInfo();
+            doingListViewAdapter();
+            Toast.makeText(this, id + " " + date + " " + description, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getDate () {
@@ -191,5 +206,4 @@ public class MainActivity extends Activity {
         myMonth = localCalendar.get(Calendar.MONTH);
         myYear = localCalendar.get(Calendar.YEAR);
     }
-
 }
